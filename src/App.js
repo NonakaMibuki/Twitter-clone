@@ -8,10 +8,10 @@ import Widgets from "./components/widget/Widgets";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 function App() {
-  const [isAuth, setIsAuth] = useState(false)
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"))
 
   return (
-    <Router className="app">
+    <Router className="app" basename="/twitter-clone">
       <Routes>
         <Route
           path="/"

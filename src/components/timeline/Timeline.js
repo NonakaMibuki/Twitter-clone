@@ -5,11 +5,21 @@ import Post from "./Post";
 import { db } from "../../firebase";
 import { collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import FlipMove from "react-flip-move";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { Avatar } from "@mui/material";
+import { ChatBubbleOutline, PublishOutlined, Repeat, VerifiedUser } from "@mui/icons-material";
 
-
-function Timeline({isAuth}) {
+function Timeline({ isAuth }) {
   const [posts, setPosts] = useState([]);
+  const [liked, setLiked] = useState({});
+
+  const toggleLiked = (id) => {
+    setLiked((prevLiked) => ({
+      ...prevLiked,
+      [id]: !prevLiked[id],
+    }));
+  };
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,15 +31,15 @@ function Timeline({isAuth}) {
 
     //リアルタイム表示
     onSnapshot(q, (querySnapShot) => {
-      setPosts(querySnapShot.docs.map((doc) => doc.data()));
+      setPosts(querySnapShot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
     });
   }, []);
 
   useEffect(() => {
-    if(!isAuth) {
-      navigate("/login")
+    if (!isAuth) {
+      navigate("/login");
     }
-  }, [])
+  }, []);
 
   return (
     <div className="timeline">
@@ -40,11 +50,17 @@ function Timeline({isAuth}) {
       {/* TweetBox */}
       <TweetBox />
       {/* Post */}
-      <FlipMove>
+      <div>
         {posts.map((post) => (
-          <Post key={post.text} displayName={post.displayName} username={post.username} verified={post.verified} text={post.text} avatar={post.avatar} image={post.image} />
+          <Post
+            key={post.id}
+            {...post}
+            liked={liked[post.id] || false}
+            toggleLiked={() => toggleLiked(post.id)}
+          />
         ))}
-      </FlipMove>
+      </div>
+
     </div>
   );
 }

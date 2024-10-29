@@ -27,6 +27,23 @@ p {
     margin-top: 10px;
 }
 
+.post__footer button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.post__footer .favorite__icon {
+    width: 22px;  
+    height: 22px;
+    object-fit: contain; 
+    border-radius: 0;
+}
+
+.favorite__icon.red {
+    background-color: red;
+  }
+
 .post__headerDescription {
     margin-bottom: 15px;
     font-size: 15px;
@@ -58,3 +75,4 @@ p {
 .post__avatar {
     padding: 15px;
 }
+

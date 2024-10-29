@@ -2,7 +2,7 @@ import { Avatar, Button } from '@mui/material'
 import React, { useState } from 'react'
 import "./TweetBox.css"
 import { collection, addDoc, serverTimestamp } from "firebase/firestore"; 
-import {db} from '../../firebase';
+import {db, auth} from '../../firebase';
 
 function TweetBox() {
 
@@ -13,8 +13,11 @@ function TweetBox() {
     e.preventDefault(); //ツイートボタンを押してもリロードしない
 
     addDoc(collection(db, "posts"), {
-      displayName: "山田 太郎",
-      username: "Shin_Engineer",
+      displayName: "山田太郎",
+      author: {
+        username: "",
+        id: auth.currentUser.uid
+      },
       verified: true,
       text: tweetMessage,
       avatar:"https://cdn.pixabay.com/photo/2024/04/08/11/42/doggy-8683291_1280.jpg",
